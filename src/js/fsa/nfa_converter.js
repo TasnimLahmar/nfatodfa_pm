@@ -1,4 +1,5 @@
 import FSA from './fsa.js'
+import { removeDuplicates } from '../util/array.js'
 
 export default class NFAConverter {
     /**
@@ -83,8 +84,7 @@ export default class NFAConverter {
             list = this.getUnreachableStates(tempDFA, list.concat(nodesWithoutIncomingEdges))
         }
 
-        // Remove duplicates from the list by spreading it as a Set
-        return [...new Set(list)]
+        return removeDuplicates(list)
     }
 
     /**
@@ -160,7 +160,7 @@ export default class NFAConverter {
 
         // The new start state is the states that are reachable from the original start state
         // e.g. '1' has an ε-transition to '3'; therefore, the new start state is '1,3'
-        const startState = [...new Set(this.nfa.getEpsilonClosureStates(this.nfa.startState))].sort().join(',')
+        const startState = removeDuplicates(this.nfa.getEpsilonClosureStates(this.nfa.startState)).join(',')
 
         // The new list of accept states are any states from the powerset with the original accept state in them
         // e.g. '1' is the accept state; therefore, '1', '1,2', '1,3', and '1,2,3' are accept states
@@ -208,8 +208,7 @@ export default class NFAConverter {
                 reachableStates = reachableStates.concat(this.nfa.getReachableStates(s, symbol))
             })
 
-            // Remove any duplicates and sort the states alphabetically
-            reachableStates = [...new Set(reachableStates)].sort()
+            reachableStates = removeDuplicates(reachableStates)
 
             // Remove Ø if the state has other possibilites
             if (reachableStates.some(e => e !== 'Ø')) {

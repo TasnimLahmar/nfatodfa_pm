@@ -1,5 +1,6 @@
 import EventHandler from '../util/event_handler.js'
 import { UnknownStateError } from '../util/errors.js'
+import { removeDuplicates } from '../util/array.js'
 import FSA from './fsa.js'
 import Location from '../canvas/location.js'
 import EditNodeMenu from '../elements/edit_node_menu.js'
@@ -234,7 +235,7 @@ export default class VisualFSA extends EventHandler {
                 if (symbol !== 'ε') { alphabet.push(symbol) }
             }
         }
-        this.fsa.alphabet = [...new Set(alphabet)].sort()
+        this.fsa.alphabet = removeDuplicates(alphabet)
     }
 
     /**
@@ -259,8 +260,8 @@ export default class VisualFSA extends EventHandler {
         fromNode.transitionText[to].push(symbol)
 
         // Remove duplicates in case the user somehow added two of the same transitions
-        fromNode.transitionText[to] = [...new Set(fromNode.transitionText[to])].sort()
-        this.fsa.transitions[from][symbol] = [...new Set(this.fsa.transitions[from][symbol])].sort()
+        fromNode.transitionText[to] = removeDuplicates(fromNode.transitionText[to])
+        this.fsa.transitions[from][symbol] = removeDuplicates(this.fsa.transitions[from][symbol])
 
         this.updateAlphabet()
         this.dispatchEvent('change')

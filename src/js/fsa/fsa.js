@@ -1,4 +1,5 @@
 import { UnknownStateError, UnknownSymbolError } from '../util/errors.js'
+import { removeDuplicates } from '../util/array.js'
 
 export default class FSA {
     /**
@@ -114,14 +115,23 @@ export default class FSA {
      * @param {String} fromState The label of the state to find epsilon-reachable states from
      * @returns {Array} The array of states that can be reached via an ε-transition
      */
-    getEpsilonClosureStates (fromState) {
+    getEpsilonClosureStates (fromState, checkedStates = []) {
         if (!this.states.includes(fromState)) throw new UnknownStateError(fromState)
 
+        // Ensure fromState has any epsilon transitions
         if (!this.transitions[fromState] || !this.transitions[fromState]['ε']) {
             return [fromState]
-        } else {
-            return [fromState, ...this.transitions[fromState]['ε']]
         }
+
+        const toStates = this.transitions[fromState]['ε']
+
+        // Recursively check for epsilon transitions
+        // Avoid infinite loop by omitting already-checked states
+        const allEpsilonClosureStates = toStates
+            .filter(s => checkedStates.indexOf(s) === -1)
+            .map(s => this.getEpsilonClosureStates(s, [...checkedStates, ...toStates]))
+
+        return removeDuplicates([fromState, ...allEpsilonClosureStates].flat())
     }
 
     /**
@@ -151,7 +161,6 @@ export default class FSA {
             }
         }
 
-        // Remove duplicate entries by spreading a set
-        return [...new Set(list)].sort()
+        return removeDuplicates(list)
     }
 }

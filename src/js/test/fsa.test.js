@@ -17,7 +17,7 @@ describe('FSA 1', () => {
         '3': {
             'a': ['1'],
             'b': undefined,
-            'ε': undefined
+            'ε': ['2']
         }
     }, '1', ['1'])
 
@@ -29,9 +29,9 @@ describe('FSA 1', () => {
     })
 
     it('should get epsilon closure states', done => {
-        fsa.getEpsilonClosureStates('1').should.eql(['1', '3'])
+        fsa.getEpsilonClosureStates('1').should.eql(['1', '2', '3'])
         fsa.getEpsilonClosureStates('2').should.eql(['2'])
-        fsa.getEpsilonClosureStates('3').should.eql(['3'])
+        fsa.getEpsilonClosureStates('3').should.eql(['2', '3'])
         done()
     })
 
@@ -39,8 +39,8 @@ describe('FSA 1', () => {
         fsa.getReachableStates('1', 'a').should.eql(['Ø'])
         fsa.getReachableStates('1', 'b').should.eql(['2'])
         fsa.getReachableStates('2', 'a').should.eql(['2', '3'])
-        fsa.getReachableStates('2', 'b').should.eql(['3'])
-        fsa.getReachableStates('3', 'a').should.eql(['1', '3'])
+        fsa.getReachableStates('2', 'b').should.eql(['2', '3'])
+        fsa.getReachableStates('3', 'a').should.eql(['1', '2', '3'])
         fsa.getReachableStates('3', 'b').should.eql(['Ø'])
         done()
     })
