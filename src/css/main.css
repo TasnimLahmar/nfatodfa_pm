@@ -1,7 +1,7 @@
 body {
     padding: 20px;
     padding-top: 80px;
-    background-color: #f6f6f6;
+    background-color: #e4ecee;
 }
 
 .title {
@@ -52,25 +52,25 @@ body {
 }
 
 .blue-button, .blue-button:focus, .blue-button:hover, .blue-button[disabled] {
-    background-color: #34b1eb;
+    background-color: #27881e;
     border-color: transparent;
     color: #fff;
-    box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+   
 }
 
 .blue-button:hover {
-    background-color: #2ba5de;
+    background-color: #2bded5;
 }
 
 .orange-button, .orange-button:focus, .orange-button:hover, .orange-button[disabled] {
-    background-color: #f3b75b;
+    background-color: #238317;
     border-color: transparent;
     color: #fff;
-    box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+   
 }
 
 .orange-button:hover {
-    background-color: #e3a444;
+    background-color: #44e3d6;
 }
 
 .dropdown-item {

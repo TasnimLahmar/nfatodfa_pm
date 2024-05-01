@@ -14,7 +14,7 @@ import BezierCurvedLine from '../canvas/drawables/bezier_curved_line.js'
 import ArrowedStraightLine from '../canvas/drawables/arrowed_straight_line.js'
 
 const NODE_RADIUS = 30
-const NODE_COLOR = '#34b1eb'
+const NODE_COLOR = '#eb34b1'
 const NODE_LABEL_SIZE = 24
 const NODE_OUTLINE_RADIUS = 5
 
@@ -630,7 +630,7 @@ export default class VisualFSA extends EventHandler {
             }
 
             if (node.acceptState) {
-                color = 'green'
+                color = "#3455eb"
 
                 // Add a double outline to the accept state
                 outline = { color: '#000', width: 2, distance: NODE_OUTLINE_RADIUS }
