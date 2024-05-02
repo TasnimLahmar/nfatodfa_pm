@@ -17,6 +17,30 @@ const dfa = {
     desc: new FSADescription('#dfa-delta-transitions')
 }
 
+function acceptsString(dfaVisual, inputString) {
+    const fsa = dfaVisual.fsa; // Access the underlying FSA
+    let currentState = fsa.startState; // Start state
+
+    // Loop through each symbol in the input string
+    for (const symbol of inputString) {
+        if (!fsa.alphabet.includes(symbol)) {
+            console.error(`Symbol ${symbol} is not in the DFA's alphabet.`);
+            return false; // Invalid symbol
+        }
+
+        // Ensure there's a valid transition from the current state
+        if (!fsa.transitions[currentState] || !fsa.transitions[currentState][symbol]) {
+            return false; // No valid transition
+        }
+
+        // Transition to the next state
+        currentState = fsa.transitions[currentState][symbol][0]; // DFA transitions are deterministic
+    }
+
+    // Check if the final state is an accept state
+    return fsa.acceptStates.includes(currentState);
+}
+
 nfa.visual.addEventListener('change', () => {
     if (nfa.visual.fsa.states.length > 0) {
         setEditButtonsState(true)
@@ -95,6 +119,24 @@ let animatedConverter
 /**
  * Advance the NFA conversion one-by-one with the step forward button
  */
+const testInput = document.querySelector("#test_input");
+const testResult = document.querySelector("#test_result");
+document.querySelector('#test_btn').addEventListener('click', () => {
+    console.log("hello im here")
+    const inputString = testInput.value;
+    console.log(inputString) // Get the text from the input field
+    const isAccepted = acceptsString(dfa.visual, inputString); // Check if DFA accepts the string
+
+        // Display the result under the input field
+        if (isAccepted) {
+            testResult.textContent = "The string is accepted by the DFA.";
+            testResult.style.color = "green"; // Green indicates acceptance
+        } else {
+            testResult.textContent = "The string is NOT accepted by the DFA.";
+            testResult.style.color = "red"; // Red indicates rejection
+        }
+   
+});
 document.querySelector('#step-forward').addEventListener('click', () => {
     if (!validateNFA()) return
 
@@ -329,3 +371,40 @@ document.querySelector('#preset-2').addEventListener('click', () => {
 document.querySelector('#preset-3').addEventListener('click', () => {
     nfa.visual.fromJSON('{"nodes":[{"label":"1","loc":{"x":206,"y":119},"transitionText":{"2":["b"],"3":["ε"]}},{"label":"2","loc":{"x":560,"y":119},"transitionText":{"1":["a"],"2":["b"]},"acceptState":true},{"label":"3","loc":{"x":375,"y":388},"transitionText":{"2":["a"],"3":["a","b"]}}],"fsa":{"states":["1","2","3"],"alphabet":["a","b"],"transitions":{"1":{"ε":["3"],"b":["2"]},"2":{"b":["2"],"a":["1"]},"3":{"a":["2","3"],"b":["3"]}},"startState":"1","acceptStates":["2"]}}')
 })
+
+
+
+/*document.addEventListener("DOMContentLoaded", () => {
+    const testButton = document.getElementById("test_btn");
+    const testInput = document.getElementById("test_input");
+    const testResult = document.getElementById("test_result");
+
+    testButton.addEventListener("click", () => {
+        const inputString = testInput.value; // Get the text from the input field
+        const isAccepted = dfa.visual.acceptsString(inputString); // Check if DFA accepts the string
+
+        // Display the result under the input field
+        if (isAccepted) {
+            testResult.textContent = "The string is accepted by the DFA.";
+            testResult.style.color = "green"; // Green indicates acceptance
+        } else {
+            testResult.textContent = "The string is NOT accepted by the DFA.";
+            testResult.style.color = "red"; // Red indicates rejection
+        }
+    });
+});*/
+
+
+/*document.querySelector("#test_btn").addEventListener("click", () => {
+    const inputString = testInput.value; // Get the text from the input field
+    const isAccepted = dfa.visual.acceptsString(inputString); // Check if DFA accepts the string
+    console.log("hello im here")
+    // Display the result under the input field
+    if (isAccepted) {
+        testResult.textContent = "The string is accepted by the DFA.";
+        testResult.style.color = "green"; // Green indicates acceptance
+    } else {
+        testResult.textContent = "The string is NOT accepted by the DFA.";
+        testResult.style.color = "red"; // Red indicates rejection
+    }
+});*/

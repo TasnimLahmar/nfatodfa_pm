@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Button Click Example</title>
+</head>
+<body>
+    <!-- A simple button with an ID -->
+    <button id="testButton">Click Me!</button>
+
+    <!-- Script placed at the end of the body to ensure the DOM is fully loaded -->
+    <script>
+        // Check if the script runs without errors
+        console.log("Script is running");
+
+        // Get the button by its ID
+        const testButton = document.getElementById("testButton");
+
+        // If the button is found, add the event listener
+        if (testButton) {
+            testButton.addEventListener("click", () => {
+                // This should trigger a confirm dialog when the button is clicked
+                confirm("Press a button!");
+            });
+        } else {
+            console.error("Button not found");
+        }
+    </script>
+</body>
+</html>

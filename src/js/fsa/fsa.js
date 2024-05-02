@@ -26,6 +26,34 @@ export default class FSA {
     clone () {
         return new FSA(JSON.parse(JSON.stringify(this.states)), JSON.parse(JSON.stringify(this.alphabet)), JSON.parse(JSON.stringify(this.transitions)), this.startState, JSON.parse(JSON.stringify(this.acceptStates)))
     }
+    
+    /** 
+    * @param {String} inputString The input string to check.
+    * @returns {Boolean} True if the DFA accepts the string, false otherwise.
+    */
+
+    /*acceptsString(inputString) {
+        // Start at the DFA's start state
+        let currentState = this.startState;
+
+        // Loop through each symbol in the input string
+        for (const symbol of inputString) {
+            if (!this.alphabet.includes(symbol)) {
+                throw new UnknownSymbolError(`Symbol ${symbol} is not in the DFA's alphabet.`);
+            }
+
+            // Ensure there's a transition for the current state and symbol
+            if (!this.transitions[currentState] || !this.transitions[currentState][symbol]) {
+                return false; // No valid transition for this symbol, string not accepted
+            }
+
+            // Transition to the next state
+            currentState = this.transitions[currentState][symbol][0]; // DFA has deterministic transitions
+        }
+
+        // Check if the final state is an accept state
+        return this.acceptStates.includes(currentState);
+    }*/
 
     /**
      * Remove all of a state's references from the FSA
